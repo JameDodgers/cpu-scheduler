@@ -12,8 +12,7 @@ import {
 
 // import RAM from '../components/RAM'
 import Gantt from '../components/Gantt'
-
-import { fifo } from '../functions/algorithms'
+import { fifo, roundRobin, sjf } from '../functions/algorithms';
 
 import dimensions from '../util/dimensions'
 
@@ -41,8 +40,8 @@ const tasks = [
   },
   {
     id: 4,
-    arrivalTime: 4,
-    executionTime: 3,
+    arrivalTime: 0,
+    executionTime: 2,
     deadline: 2,
     priority: 1,
   }
@@ -52,7 +51,7 @@ const index = ({route}) => {
   const {
     quantum,
     overload,
-    tasks,
+    // tasks,
     selectedPagingAlgorithm,
     selectedSchedulingAlgorithm,
   } = route.params
@@ -84,7 +83,7 @@ const index = ({route}) => {
       console.log('stop')
     }
 
-    // setExecutedTask(fifo(tasks, time))
+    // setExecutedTask(roundRobin(tasks, 2));
   }
 
   useEffect(() => {

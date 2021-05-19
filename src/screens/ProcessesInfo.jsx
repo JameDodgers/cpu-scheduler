@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 import { 
   StyleSheet, 
-  ScrollView,
-  KeyboardAvoidingView,
+  ScrollView, 
+  KeyboardAvoidingView
 } from "react-native";
 
 import { Button } from "react-native-paper";
