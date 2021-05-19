@@ -10,6 +10,7 @@ import {
 
 // import RAM from '../components/RAM'
 import Gantt from '../components/Gantt'
+import { fifo, roundRobin, sjf } from '../functions/algorithms';
 
 const tasks = [
   {
@@ -36,7 +37,7 @@ const tasks = [
   {
     id: 4,
     arrivalTime: 0,
-    executionTime: 3,
+    executionTime: 2,
     deadline: 2,
     priority: 1,
   }
@@ -45,26 +46,20 @@ const tasks = [
 const index = ({route}) => {
   // const { tasks } = route.params
   const [time, setTime] = useState(0)
-  const [executedTask, setExecutedTask] = useState({
-    id: 1,
-    arrivalTime: 0,
-    executionTime: 3,
-    deadline: 2,
-    priority: 1,
-  },)
+  const [executedTask, setExecutedTask] = useState()
 
   const execute = () => {
     setTime(time => time + 1)
     scheduling()
+    setExecutedTask(roundRobin(tasks, 2));
   }
 
   const scheduling = () => {
     const activeTasks = tasks.filter(((task) => task.arrivalTime <= time))
-
   }
 
   useEffect(() => {
-    const executionInterval = setInterval(execute, 500)
+    const executionInterval = setInterval(execute, 5000)
 
     return () => {
       clearInterval(executionInterval)

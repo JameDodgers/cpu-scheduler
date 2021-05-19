@@ -3,7 +3,7 @@ import React from "react";
 import { 
   StyleSheet, 
   Text, 
-  View 
+  View
 } from "react-native";
 
 export default ({ style, textStyle, text }) => {
@@ -16,9 +16,10 @@ export default ({ style, textStyle, text }) => {
   );
 };
 
+
 const styles = StyleSheet.create({
   cell: {
-    backgroundColor: "gray",
+    backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 1,
