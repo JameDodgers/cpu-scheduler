@@ -16,14 +16,18 @@ export default ({id, setTasks}) => {
   const [deadline, setDeadline] = useState()
   const [priority, setPriority] = useState()
 
-  const addTask = () => {
-    setTasks(tasks => [...tasks, {
-      id: id,
-      arrivalTime: arrivalTime,
-      executionTime: executionTime,
-      deadline: deadline,
-      priority: priority,
-    }])
+  const addTask = (arrivalTime, executionTime, deadline, priority) => {
+    setTasks(tasks => {
+      
+      tasks[id - 1] = {
+      ...tasks[id - 1],
+      arrivalTime: Number(arrivalTime),
+      executionTime: Number(executionTime),
+      deadline: Number(deadline),
+      priority: Number(priority),
+    }
+      return tasks
+    })
   }
 
   return(
@@ -38,10 +42,9 @@ export default ({id, setTasks}) => {
           label="Tempo de Chegada"
           keyboardType='number-pad'
           value={arrivalTime}
-          onChangeText={number => {
-            setArrivalTime(number)
-            addTask()
-            // setTasks(tasks => []) AQUI
+          onChangeText={value => {
+            setArrivalTime(value)
+            addTask(value, executionTime, deadline, priority)
           }}
         />
         <TextInput
@@ -50,9 +53,9 @@ export default ({id, setTasks}) => {
           label="Tempo de execução"
           keyboardType='number-pad'
           value={executionTime}
-          onChangeText={number => {
-            setExecutionTime(number)
-            addTask()
+          onChangeText={value => {
+            setExecutionTime(value)
+            addTask(arrivalTime, value, deadline, priority)
           }}
         />
       </View>
@@ -63,9 +66,9 @@ export default ({id, setTasks}) => {
           keyboardType='number-pad'
           label="Deadline"
           value={deadline}
-          onChangeText={number => {
-            setDeadline(number)
-            addTask()
+          onChangeText={value => {
+            setDeadline(value)
+            addTask(arrivalTime, deadline, value, priority)
           }}
         />
         <TextInput
@@ -74,9 +77,9 @@ export default ({id, setTasks}) => {
           label="Prioridade"
           keyboardType='number-pad'
           value={priority}
-          onChangeText={number => {
-            setPriority(number)
-            addTask()
+          onChangeText={value => {
+            setPriority(value)
+            addTask(arrivalTime, executionTime, deadline, value)
           }}
         />
       </View>  

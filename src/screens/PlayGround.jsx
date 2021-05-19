@@ -2,14 +2,20 @@ import React, { useEffect, useState } from 'react'
 
 import * as ScreenOrientation from 'expo-screen-orientation';
 
+import { useDimensions } from '@react-native-community/hooks'
+
 import { 
   StyleSheet,
   View,
-  Dimensions,
+  ScrollView
 } from 'react-native'
 
 // import RAM from '../components/RAM'
 import Gantt from '../components/Gantt'
+
+import { fifo } from '../functions/algorithms'
+
+import dimensions from '../util/dimensions'
 
 const tasks = [
   {
@@ -35,7 +41,7 @@ const tasks = [
   },
   {
     id: 4,
-    arrivalTime: 0,
+    arrivalTime: 4,
     executionTime: 3,
     deadline: 2,
     priority: 1,
@@ -43,29 +49,56 @@ const tasks = [
 ]
 
 const index = ({route}) => {
-  // const { tasks } = route.params
+  const {
+    quantum,
+    overload,
+    tasks,
+    selectedPagingAlgorithm,
+    selectedSchedulingAlgorithm,
+  } = route.params
+  
+  const { 
+    height: width
+  } = useDimensions().window
+
   const [time, setTime] = useState(0)
   const [executedTask, setExecutedTask] = useState({
-    id: 1,
-    arrivalTime: 0,
-    executionTime: 3,
-    deadline: 2,
-    priority: 1,
-  },)
-
-  const execute = () => {
-    setTime(time => time + 1)
-    scheduling()
-  }
+      id: 1,
+      arrivalTime: 0,
+      executionTime: 3,
+      deadline: 2,
+      priority: 1,
+    })
+  const [columnsNumber, setColumnsNumber] = useState()
+  const [executionInterval, setExecutionInterval] = useState(null)
 
   const scheduling = () => {
-    const activeTasks = tasks.filter(((task) => task.arrivalTime <= time))
+    const activeTasks = tasks.filter(((task) => task.arrivalTime >= time))
 
+    // console.log(`${time}`)
+
+    // Para não fazer o gráfico crescer indefinidamente
+    if(time === 40){
+      setExecutedTask(undefined)
+      clearInterval(executionInterval)
+      console.log('stop')
+    }
+
+    // setExecutedTask(fifo(tasks, time))
   }
 
   useEffect(() => {
-    const executionInterval = setInterval(execute, 500)
+    // console.log(time)
+    scheduling()
+  }, [time])
 
+  const execute = () => {
+    setTime(time => time + 1)
+  }
+
+  useEffect(() => {   
+    setExecutionInterval(setInterval(execute, 500))
+    
     return () => {
       clearInterval(executionInterval)
     }
@@ -74,27 +107,38 @@ const index = ({route}) => {
   const changeScreenOrientation = async () => {
     try{
       await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
+
+      const columnsNumber = Math.floor(width / (dimensions.cellSize + dimensions.cellBorderSize)) - 5
+      setColumnsNumber(columnsNumber)
     }catch(error){
       console.log(error)
     }
   }
 
   useEffect(() => {
-    // changeScreenOrientation()
+    changeScreenOrientation()
+
+    return () => {
+      ScreenOrientation.unlockAsync()
+    }
   }, [])
-
-  const cellSize = 25
-
-  const columnsNumber = Math.floor(Dimensions.get('window').width / cellSize)
 
   return(
     <View style={styles.container}>
-      <Gantt
-        tasks={tasks}
-        time={time}
-        executedTask={executedTask}
-        columnsNumber={columnsNumber}
-      />
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}>
+        {
+          (columnsNumber !== undefined) && (
+            <Gantt
+              tasks={tasks}
+              time={time}
+              executedTask={executedTask}
+              columnsNumber={columnsNumber}
+            />
+          )
+        }
+      </ScrollView>
     </View>
   )
 }

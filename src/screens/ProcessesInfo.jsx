@@ -2,7 +2,8 @@ import React, { useState } from "react";
 
 import { 
   StyleSheet, 
-  ScrollView, 
+  ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 
 import { Button } from "react-native-paper";
@@ -10,9 +11,37 @@ import { Button } from "react-native-paper";
 import ProcessInfo from "../components/ProcessInfo";
 
 const index = ({ navigation, route }) => {
-  const { processesNumber } = route.params;
+  const { 
+    processesNumber,
+    overload,
+    quantum,
+    selectedPagingAlgorithm,
+    selectedSchedulingAlgorithm,
+  } = route.params;
 
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(
+    [...Array(Number(processesNumber))].map((_, index) => {
+      return {
+        id: index + 1,
+        arrivalTime: 0,
+        executionTime: 1,
+        deadline: undefined,
+        priority: 0,  
+      }
+    })
+  );
+
+  const handleSubmit = () => {
+    // console.log(tasks)
+    navigation.navigate("PlayGround", {
+      tasks: tasks,
+      quantum: quantum,
+      overload: overload,
+      processesNumber: processesNumber,
+      selectedPagingAlgorithm: selectedPagingAlgorithm,
+      selectedSchedulingAlgorithm: selectedSchedulingAlgorithm,
+    });
+  }
 
   return (
     <KeyboardAvoidingView
@@ -26,17 +55,17 @@ const index = ({ navigation, route }) => {
         contentContainerStyle={styles.contentContainer}
         style={styles.content}
       >
-        {[...Array(Number(processesNumber))].map((_, index) => (
-          <ProcessInfo id={index + 1} key={index} setTasks={setTasks} />
+        {[...Array(Number(processesNumber))]
+        .map((_, index) => (
+          <ProcessInfo 
+            id={index + 1} 
+            key={index} 
+            setTasks={setTasks} 
+          />
         ))}
         <Button
           mode="contained"
-          onPress={() => {
-            navigation.navigate("PlayGround", {
-              tasks: tasks,
-            });
-            console.log(tasks);
-          }}
+          onPress={() => handleSubmit()}
         >
           Próximo
         </Button>

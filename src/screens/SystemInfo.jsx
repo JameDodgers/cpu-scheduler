@@ -18,11 +18,11 @@ import { Picker } from "@react-native-picker/picker";
 const index = ({ navigation }) => {
   const { colors } = useTheme();
 
-  const [quantum, setQuantum] = useState();
-  const [overload, setOverload] = useState();
-  const [selectedSchedulingAlgorithm, setSelectedSchedulingAlgorithm] = useState();
-  const [selectedPagingAlgorithm, setSelectedPagingAlgorithm] = useState();
-  const [processesNumber, setProcessesNumber] = React.useState();
+  const [quantum, setQuantum] = useState('0');
+  const [overload, setOverload] = useState('0');
+  const [selectedSchedulingAlgorithm, setSelectedSchedulingAlgorithm] = useState(1);
+  const [selectedPagingAlgorithm, setSelectedPagingAlgorithm] = useState(1);
+  const [processesNumber, setProcessesNumber] = useState('0');
 
   const schedulingAlgorithms = [
     {
@@ -137,38 +137,43 @@ const index = ({ navigation }) => {
             })}
           </Picker>
         </View>
-        <View style={styles.row}>
+        <View style={styles.row}>                
           <TextInput
             style={styles.textInputRow}
             mode="outlined"
-            label="Tempo de Chegada"
+            label="Tempo de Execução"
             keyboardType="number-pad"
             value={quantum}
-            onChangeText={(number) => setQuantum(number)}
+            onChangeText={setQuantum}
           />
           <TextInput
             mode="outlined"
             style={styles.textInput}
-            label="Tempo de execução"
+            label="Tempo de Chegada"
             keyboardType="number-pad"
             value={overload}
-            onChangeText={(number) => setOverload(number)}
+            onChangeText={setOverload}
           />
-        </View>
+        </View>        
         <TextInput
           style={styles.item}
           mode="outlined"
           label="Número de processos"
           keyboardType="number-pad"
           value={processesNumber}
-          onChangeText={(number) => setProcessesNumber(number)}
+          onChangeText={setProcessesNumber}
         />
         <Button
           mode="contained"
-          onPress={() =>
+          onPress={() => {
             navigation.navigate("ProcessesInfo", {
-              processesNumber: processesNumber | "0",
+              processesNumber: processesNumber,
+              quantum: quantum,
+              overload: overload,
+              selectedPagingAlgorithm: selectedPagingAlgorithm,
+              selectedSchedulingAlgorithm: selectedSchedulingAlgorithm,
             })
+            }
           }
         >
           Próximo

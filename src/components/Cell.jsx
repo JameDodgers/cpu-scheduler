@@ -5,6 +5,7 @@ import {
   Text, 
   View 
 } from "react-native";
+import dimensions from "../util/dimensions";
 
 export default ({ style, textStyle, text }) => {
   return (
@@ -21,10 +22,10 @@ const styles = StyleSheet.create({
     backgroundColor: "gray",
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: 1,
-    marginBottom: 1,
-    height: 25,
-    width: 25,
+    marginLeft: dimensions.cellBorderSize,
+    marginBottom: dimensions.cellBorderSize,
+    height: dimensions.cellSize,
+    width: dimensions.cellSize,
   },
   text: {
     

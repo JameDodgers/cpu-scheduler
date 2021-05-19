@@ -4,11 +4,11 @@ import {
   StyleSheet,
   View
 } from 'react-native'
+
 import Cell from './Cell'
 
 export default ({tasks, executedTask, time, columnsNumber}) => {
   const [maxTime, setMaxTime] = useState(columnsNumber)
-
   const [matrix, setMatrix] = useState(
     Array.from({length: tasks.length}, () => 
       Array.from({length: columnsNumber}, () => 0)
@@ -26,7 +26,7 @@ export default ({tasks, executedTask, time, columnsNumber}) => {
         }
 
         const updatedMatrix = matrix
-        updatedMatrix[executedTask.id - 1][time] = 1
+        updatedMatrix[executedTask.id - 1][time - 1] = 1
 
         setMatrix(updatedMatrix)
       }
