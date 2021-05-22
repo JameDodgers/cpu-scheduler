@@ -21,14 +21,14 @@ const tasks = [
     id: 1,
     arrivalTime: 0,
     executionTime: 3,
-    deadline: 2,
+    deadline: 0,
     priority: 1,
   },
   {
     id: 2,
     arrivalTime: 0,
     executionTime: 3,
-    deadline: 2,
+    deadline: 1,
     priority: 1,
   },
   {
@@ -42,7 +42,7 @@ const tasks = [
     id: 4,
     arrivalTime: 0,
     executionTime: 2,
-    deadline: 2,
+    deadline: 3,
     priority: 1,
   }
 ]

@@ -63,23 +63,27 @@ export default ({tasks, executedTask, time, columnsNumber}) => {
       </View> 
       <View>
         {
-          matrix.map((task, row) => (
-            <View 
-              key={`${row}`}
-              style={styles.row}>
-                {
-                  task.map((cell, column) => (
-                    <Cell
-                      style={(cell === 1) 
-                        ? { backgroundColor: 'green'} 
-                        : undefined
-                      }
-                      key={`${row}${column}`} 
-                    />
-                  ))
-                }                
-            </View>            
-          ))
+          matrix.map((task, row) => {
+            const { deadline } = tasks[row]
+            
+            return (
+              <View 
+                key={`${row}`}
+                style={styles.row}>
+                  {
+                    task.map((cell, column) => (
+                      <Cell
+                        style={[
+                          (column === deadline - 1) && { borderEndColor: 'red'},
+                          (cell === 1) && { backgroundColor: 'green'}
+                        ]}
+                        key={`${row}${column}`} 
+                      />
+                    ))
+                  }                
+              </View>            
+            )
+          })
         }
         <View style={styles.row}>
           {
@@ -103,6 +107,5 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    backgroundColor: 'black'
   },
 })

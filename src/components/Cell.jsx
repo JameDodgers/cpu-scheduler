@@ -20,13 +20,14 @@ export default ({ style, textStyle, text }) => {
 
 const styles = StyleSheet.create({
   cell: {
-    backgroundColor: "white",
+    backgroundColor: "gray",
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: dimensions.cellBorderSize,
-    marginBottom: dimensions.cellBorderSize,
     height: dimensions.cellSize,
     width: dimensions.cellSize,
+    borderRightWidth: dimensions.cellBorderSize,
+    borderBottomWidth: dimensions.cellBorderSize,
+    borderColor: 'black'
   },
   text: {
     
