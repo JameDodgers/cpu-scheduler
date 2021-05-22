@@ -17,8 +17,7 @@ export default ({id, setTasks}) => {
   const [priority, setPriority] = useState()
 
   const addTask = (arrivalTime, executionTime, deadline, priority) => {
-    setTasks(tasks => {
-      
+    setTasks(tasks => {    
       tasks[id - 1] = {
       ...tasks[id - 1],
       arrivalTime: Number(arrivalTime),

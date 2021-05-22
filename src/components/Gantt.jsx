@@ -14,17 +14,20 @@ export default ({tasks, executedTask, time, columnsNumber}) => {
       Array.from({length: columnsNumber}, () => 0)
     )
   )
-  
+
   useEffect(() => {
-    setMaxTime(Math.max(columnsNumber, time))
-
-    const draw = () => {     
+    const draw = () => {  
+      if(time > columnsNumber) {
+        const updatedMatrix = matrix.map((task, _) => {
+          task.push(0)
+          return task
+        })
+        
+        setMatrix(updatedMatrix)
+        setMaxTime(time)
+      }
+      
       if(executedTask !== undefined){
-        if(time > columnsNumber) {
-          const updatedMatrix = matrix.map((task, _) => task.push(0))
-          setMatrix(updatedMatrix)
-        }
-
         const updatedMatrix = matrix
         updatedMatrix[executedTask.id - 1][time - 1] = 1
 
