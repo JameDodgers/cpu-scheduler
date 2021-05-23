@@ -45,19 +45,15 @@ export const sjf = (queue) => {
 
 // Round Robin - fifo com tempo de quantum
 export const roundRobin = (queue, quantum) => {
-  // Quebrado. Terminar 
   if (queue.length > 0) {
-    const task = queue[0];
-
-    task.executionTime -= 2;
-
-    if (task.executionTime === 0) {
-      queue.splice(0, 1);
-    }
+    
+    
+    
     return {
       ...task,
       overload: false
     };;
+
   }
 
   return undefined
@@ -77,7 +73,6 @@ export const edf = (queue, quantumCount, time) => {
     --shortestTask.deadline;
 
     if (shortestTask.deadline === 0) {
-      //console.log(shortestTask.id + ": TM = " + shortestTask.turnaround);
       queue.splice(queue.indexOf(shortestTask), 1);
     }
     //console.log(shortestTask);
