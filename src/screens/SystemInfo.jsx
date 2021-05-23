@@ -23,7 +23,7 @@ import {
 const index = ({ navigation }) => {
   const { colors } = useTheme();
 
-  const [quantum, setQuantum] = useState('0');
+  const [quantum, setQuantum] = useState('1');
   const [overload, setOverload] = useState('0');
   const [selectedSchedulingAlgorithm, setSelectedSchedulingAlgorithm] = useState(1);
   const [selectedPagingAlgorithm, setSelectedPagingAlgorithm] = useState(1);

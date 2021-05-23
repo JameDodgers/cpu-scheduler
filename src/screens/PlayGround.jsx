@@ -44,6 +44,7 @@ const index = ({ route }) => {
   const [executionInterval, setExecutionInterval] = useState(null);
   const [queue, _] = useState(Array());
   const [overloadCount, setOverloadCount] = useState(0)
+  const [quantumCount, setQuantumCount] = useState(Number(quantum))
   
   const schedulingAlgorithms = [fifo, sjf, roundRobin, edf];
 
@@ -76,7 +77,14 @@ const index = ({ route }) => {
 
       // Executa o algoritmo de escalonamento selecionado se não houver sobrecarga
       if(!overloadCount) {
-        const newTask = schedulingAlgorithm(queue)
+        const newTask = schedulingAlgorithm(queue, quantumCount, time)
+
+        if(
+          executedTask && newTask && 
+          (executedTask.id !== newTask)
+        ) {
+          setQuantumCount(Number(quantum))
+        }
 
         if(newTask && (
           (schedulingAlgorithmsInfo[selectedSchedulingAlgorithm - 1].preemptive) ||
@@ -85,7 +93,8 @@ const index = ({ route }) => {
           setOverloadCount(Number(overload))
         }
 
-        setExecutedTask(newTask);       
+        setExecutedTask(newTask);
+        setQuantumCount(quantumCount => quantumCount - 1)
       } else {
         setOverloadCount(overloadCount => overloadCount - 1)
         setExecutedTask(executedTask => ({

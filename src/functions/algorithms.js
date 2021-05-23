@@ -64,7 +64,7 @@ export const roundRobin = (queue, quantum) => {
 };
 
 // EDF (Earliest Deadline First) - retorna para o processador a tarefa com menor dealine na fila de prontos
-export const edf = (queue) => {
+export const edf = (queue, quantumCount, time) => {
   if (queue.length > 0) {
     var shortestTask = queue[0];
 
