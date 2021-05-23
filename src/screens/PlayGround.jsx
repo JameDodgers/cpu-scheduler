@@ -12,40 +12,20 @@ import {
 
 // import RAM from '../components/RAM'
 import Gantt from "../components/Gantt";
-import { fifo, roundRobin, sjf, edf } from "../functions/algorithms";
+
+import { 
+  fifo, 
+  roundRobin, 
+  sjf, 
+  edf 
+} from "../functions/algorithms";
+
+import { 
+  schedulingAlgorithms as schedulingAlgorithmsInfo, 
+  pagingAlgorithms
+} from '../libs/storage'
 
 import dimensions from "../util/dimensions";
-
-// const tasks = [
-//   {
-//     id: 1,
-//     arrivalTime: 0,
-//     executionTime: 3,
-//     deadline: 3,
-//     priority: 1,
-//   },
-//   {
-//     id: 2,
-//     arrivalTime: 0,
-//     executionTime: 3,
-//     deadline: 6,
-//     priority: 1,
-//   },
-//   {
-//     id: 3,
-//     arrivalTime: 0,
-//     executionTime: 3,
-//     deadline: 9,
-//     priority: 1,
-//   },
-//   {
-//     id: 4,
-//     arrivalTime: 0,
-//     executionTime: 2,
-//     deadline: 11,
-//     priority: 1,
-//   },
-// ];
 
 const index = ({ route }) => {
   const {
@@ -79,11 +59,12 @@ const index = ({ route }) => {
 
   useEffect(() => {
     const scheduling = () => {
+      // Interrompe a contagem de tempo se não há mais processos em execução e não vai chegar mais nenhum processo
       if(executedTask === undefined && time > longestArrivalTime) {
         clearInterval(executionInterval)
         return;
       }
-  
+      // Introduz os processos na fila de execução (queue) conforme eles chegam
       tasks.forEach((task, _) => {
         if (
           !(queue.some((item) => item.id === task.id)) &&
@@ -93,9 +74,18 @@ const index = ({ route }) => {
         }
       });
 
+      // Executa o algoritmo de escalonamento selecionado se não houver sobrecarga
       if(!overloadCount) {
-        setOverloadCount(Number(overload))
-        setExecutedTask(schedulingAlgorithm(queue));
+        const newTask = schedulingAlgorithm(queue)
+
+        if(newTask && (
+          (schedulingAlgorithmsInfo[selectedSchedulingAlgorithm - 1].preemptive) ||
+          (newTask.executionTime === 0)
+        )){
+          setOverloadCount(Number(overload))
+        }
+
+        setExecutedTask(newTask);       
       } else {
         setOverloadCount(overloadCount => overloadCount - 1)
         setExecutedTask(executedTask => ({
@@ -120,22 +110,22 @@ const index = ({ route }) => {
     };
   }, []);
 
-  const changeScreenOrientation = async () => {
-    try {
-      await ScreenOrientation.lockAsync(
-        ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
-      );
-
-      const columnsNumber =
-        Math.floor(width / (dimensions.cellSize + dimensions.cellBorderSize)) - 5;
-
-      setColumnsNumber(columnsNumber);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
+    const changeScreenOrientation = async () => {
+      try {
+        await ScreenOrientation.lockAsync(
+          ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+        );
+  
+        const columnsNumber =
+          Math.floor(width / (dimensions.cellSize + dimensions.cellBorderSize)) - 5;
+  
+        setColumnsNumber(columnsNumber);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     changeScreenOrientation();
 
     return () => {

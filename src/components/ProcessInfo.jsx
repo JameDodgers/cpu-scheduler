@@ -20,10 +20,10 @@ export default ({id, setTasks}) => {
     setTasks(tasks => {    
       tasks[id - 1] = {
       ...tasks[id - 1],
-      arrivalTime: Number(arrivalTime),
-      executionTime: Number(executionTime),
-      deadline: Number(deadline),
-      priority: Number(priority),
+      arrivalTime: arrivalTime ? Number(arrivalTime) : 0,
+      executionTime: executionTime ? Number(executionTime) : 1,
+      deadline: deadline ? Number(deadline) : undefined,
+      priority: priority ? Number(priority) : 0,
     }
       return tasks
     })
@@ -49,7 +49,7 @@ export default ({id, setTasks}) => {
         <TextInput
           mode='outlined'
           style={styles.rowItemEnd}
-          label="Tempo de execução"
+          label="Tempo de Execução"
           keyboardType='number-pad'
           value={executionTime}
           onChangeText={value => {

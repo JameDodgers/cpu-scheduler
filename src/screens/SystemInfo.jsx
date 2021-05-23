@@ -15,6 +15,11 @@ import { TextInput, Button } from "react-native-paper";
 
 import { Picker } from "@react-native-picker/picker";
 
+import { 
+  schedulingAlgorithms, 
+  pagingAlgorithms
+} from '../libs/storage'
+
 const index = ({ navigation }) => {
   const { colors } = useTheme();
 
@@ -23,36 +28,6 @@ const index = ({ navigation }) => {
   const [selectedSchedulingAlgorithm, setSelectedSchedulingAlgorithm] = useState(1);
   const [selectedPagingAlgorithm, setSelectedPagingAlgorithm] = useState(1);
   const [processesNumber, setProcessesNumber] = useState('0');
-
-  const schedulingAlgorithms = [
-    {
-      id: 1,
-      name: "FIFO",
-    },
-    {
-      id: 2,
-      name: "SJF",
-    },
-    {
-      id: 3,
-      name: "Round Robin",
-    },
-    {
-      id: 4,
-      name: "EDF",
-    },
-  ];
-
-  const pagingAlgorithms = [
-    {
-      id: 1,
-      name: "FIFO",
-    },
-    {
-      id: 2,
-      name: "Menos Recentemente Utilizado",
-    },
-  ];
 
   return (
     <KeyboardAvoidingView
