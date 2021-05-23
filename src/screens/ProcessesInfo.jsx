@@ -26,7 +26,9 @@ const index = ({ navigation, route }) => {
         arrivalTime: 0,
         executionTime: 1,
         deadline: undefined,
-        priority: 0,  
+        priority: 0,
+        startExecutionTime: undefined,
+        endExecutionTime: undefined,
       }
     })
   );
