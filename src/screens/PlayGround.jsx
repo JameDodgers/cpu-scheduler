@@ -64,6 +64,7 @@ const index = ({ route }) => {
   const [executionInterval, setExecutionInterval] = useState(null);
   const [queue, _] = useState(Array());
   const [overloadCount, setOverloadCount] = useState(0)
+  
   const schedulingAlgorithms = [fifo, sjf, roundRobin, edf];
 
   const schedulingAlgorithm =
@@ -93,7 +94,7 @@ const index = ({ route }) => {
       });
 
       if(!overloadCount) {
-        setOverloadCount(overload)
+        setOverloadCount(Number(overload))
         setExecutedTask(schedulingAlgorithm(queue));
       } else {
         setOverloadCount(overloadCount => overloadCount - 1)

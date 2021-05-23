@@ -7,7 +7,10 @@ export const fifo = (queue) => {
     if (task.executionTime === 0) {
       queue.splice(0, 1);
     }
-    return task;
+    return {
+      ...task,
+      overload: false
+    };
   }
 
   return undefined
@@ -31,7 +34,10 @@ export const sjf = (queue) => {
       queue.splice(queue.indexOf(shortestTask), 1);
     }
     //console.log(shortestTask);
-    return shortestTask;
+    return {
+      ...shortestTask,
+      overload: false
+    };
   }
 
   return undefined;
@@ -48,7 +54,10 @@ export const roundRobin = (queue, quantum) => {
     if (task.executionTime === 0) {
       queue.splice(0, 1);
     }
-    return task;
+    return {
+      ...task,
+      overload: false
+    };;
   }
 
   return undefined
@@ -72,7 +81,10 @@ export const edf = (queue) => {
       queue.splice(queue.indexOf(shortestTask), 1);
     }
     //console.log(shortestTask);
-    return shortestTask;
+    return {
+      ...shortestTask,
+      overload: false
+    };;
   }
 
   return undefined;
