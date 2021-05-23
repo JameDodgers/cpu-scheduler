@@ -12,7 +12,7 @@ import {
 
 // import RAM from '../components/RAM'
 import Gantt from "../components/Gantt";
-import { fifo, roundRobin, sjf } from "../functions/algorithms";
+import { fifo, roundRobin, sjf, edf } from "../functions/algorithms";
 
 import dimensions from "../util/dimensions";
 
@@ -64,7 +64,7 @@ const index = ({ route }) => {
   const [executionInterval, setExecutionInterval] = useState(null);
   const [queue, _] = useState(Array());
   const [overloadCount, setOverloadCount] = useState(0)
-  const schedulingAlgorithms = [fifo, sjf, roundRobin];
+  const schedulingAlgorithms = [fifo, sjf, roundRobin, edf];
 
   const schedulingAlgorithm =
     schedulingAlgorithms[selectedSchedulingAlgorithm - 1];
