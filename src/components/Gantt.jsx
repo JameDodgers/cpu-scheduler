@@ -27,9 +27,11 @@ export default ({tasks, executedTask, time, columnsNumber}) => {
         setMaxTime(time)
       }
       
-      if(executedTask !== undefined){
+      if(executedTask !== undefined) {
+
         const updatedMatrix = matrix
-        updatedMatrix[executedTask.id - 1][time - 1] = 1
+        updatedMatrix[executedTask.id - 1][time - 1] = 
+          executedTask.overload ? 2 : 1 
 
         setMatrix(updatedMatrix)
       }
@@ -78,7 +80,8 @@ export default ({tasks, executedTask, time, columnsNumber}) => {
                       <Cell
                         style={[
                           (column === deadline - 1) && { borderEndColor: 'red'},
-                          (cell === 1) && { backgroundColor: 'green'}
+                          (cell === 1) && { backgroundColor: 'green'},
+                          (cell === 2) && { backgroundColor: 'red'}
                         ]}
                         key={`${row}${column}`} 
                       />

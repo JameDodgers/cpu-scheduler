@@ -141,7 +141,7 @@ const index = ({ navigation }) => {
           <TextInput
             style={styles.textInputRow}
             mode="outlined"
-            label="Tempo de Execução"
+            label="Quantum do Sistema"
             keyboardType="number-pad"
             value={quantum}
             onChangeText={setQuantum}
@@ -149,7 +149,7 @@ const index = ({ navigation }) => {
           <TextInput
             mode="outlined"
             style={styles.textInput}
-            label="Tempo de Chegada"
+            label="Sobrecarga do Sistema"
             keyboardType="number-pad"
             value={overload}
             onChangeText={setOverload}

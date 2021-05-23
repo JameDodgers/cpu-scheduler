@@ -59,17 +59,11 @@ const index = ({ route }) => {
   const { height: width } = useDimensions().window;
 
   const [time, setTime] = useState(0);
-  const [executedTask, setExecutedTask] = useState({
-    id: 1,
-    arrivalTime: 0,
-    executionTime: 3,
-    deadline: 2,
-    priority: 1,
-  });
+  const [executedTask, setExecutedTask] = useState();
   const [columnsNumber, setColumnsNumber] = useState();
   const [executionInterval, setExecutionInterval] = useState(null);
   const [queue, _] = useState(Array());
-
+  const [overloadCount, setOverloadCount] = useState(0)
   const schedulingAlgorithms = [fifo, sjf, roundRobin];
 
   const schedulingAlgorithm =
@@ -97,10 +91,19 @@ const index = ({ route }) => {
           queue.push(Object.assign({}, task))
         }
       });
-  
-      setExecutedTask(schedulingAlgorithm(queue));
+
+      if(!overloadCount) {
+        setOverloadCount(overload)
+        setExecutedTask(schedulingAlgorithm(queue));
+      } else {
+        setOverloadCount(overloadCount => overloadCount - 1)
+        setExecutedTask(executedTask => ({
+          ...executedTask, 
+          overload: true
+        }))
+      }
     };
-    
+
     scheduling();
   }, [time]);
 
