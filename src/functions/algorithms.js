@@ -1,11 +1,16 @@
-export const fifo = (queue) => {
+export const fifo = (tasks, queue, time) => {
   if (queue.length > 0) {
     const task = queue[0];
+
+    if(!tasks[task.id - 1].startExecutionTime) {
+      tasks[task.id - 1].startExecutionTime = time + 1
+    }
 
     --task.executionTime;
 
     if (task.executionTime === 0) {
       queue.splice(0, 1);
+      tasks[task.id - 1].endExecutionTime = time + 1
     }
     return {
       ...task,
@@ -17,10 +22,12 @@ export const fifo = (queue) => {
 };
 
 // SJF (Shortest Job First) - retorna para o processador a tarefa mais curta na fila de tarefas prontas
-export const sjf = (queue) => {
+export const sjf = (tasks, queue, time) => {
 
   if (queue.length > 0) {
     var shortestTask = queue[0];
+
+    console.log(tasks[shortestTask.id - 1])
 
     for (let i = 0; i < queue.length; i++) {
       if (queue[i].executionTime < shortestTask.executionTime) {
@@ -28,10 +35,15 @@ export const sjf = (queue) => {
       }
     }
 
+    if(!tasks[shortestTask.id - 1].startExecutionTime) {
+      tasks[shortestTask.id - 1].startExecutionTime = time + 1
+    }
+
     --shortestTask.executionTime;
 
     if (shortestTask.executionTime === 0) {
       queue.splice(queue.indexOf(shortestTask), 1);
+      tasks[shortestTask.id - 1].endExecutionTime = time + 1
     }
     //console.log(shortestTask);
     return {
@@ -44,7 +56,8 @@ export const sjf = (queue) => {
 };
 
 // Round Robin - fifo com tempo de quantum
-export const roundRobin = (queue, quantum) => {
+export const roundRobin = (queue, quantumCount, time) => {
+  // Quebrado. Terminar 
   if (queue.length > 0) {
     
     
@@ -60,7 +73,7 @@ export const roundRobin = (queue, quantum) => {
 };
 
 // EDF (Earliest Deadline First) - retorna para o processador a tarefa com menor dealine na fila de prontos
-export const edf = (queue, quantumCount, time) => {
+export const edf = (queue, time, quantumCount) => {
   if (queue.length > 0) {
     var shortestTask = queue[0];
 

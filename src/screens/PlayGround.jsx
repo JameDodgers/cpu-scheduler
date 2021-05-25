@@ -7,6 +7,7 @@ import { useDimensions } from "@react-native-community/hooks";
 import { 
   StyleSheet, 
   View, 
+  Text,
   ScrollView 
 } from "react-native";
 
@@ -45,6 +46,7 @@ const index = ({ route }) => {
   const [queue, _] = useState(Array());
   const [overloadCount, setOverloadCount] = useState(0)
   const [quantumCount, setQuantumCount] = useState(Number(quantum))
+  const [turnaround, setTurnaround] = useState()
   
   const schedulingAlgorithms = [fifo, sjf, roundRobin, edf];
 
@@ -63,6 +65,12 @@ const index = ({ route }) => {
       // Interrompe a contagem de tempo se não há mais processos em execução e não vai chegar mais nenhum processo
       if(executedTask === undefined && time > longestArrivalTime) {
         clearInterval(executionInterval)
+
+        // console.log(tasks)
+
+        setTurnaround(tasks.reduce((acc, task) => acc +
+        (1 + (task.endExecutionTime - task.startExecutionTime)), 0) / tasks.length)
+
         return;
       }
       // Introduz os processos na fila de execução (queue) conforme eles chegam
@@ -77,7 +85,7 @@ const index = ({ route }) => {
 
       // Executa o algoritmo de escalonamento selecionado se não houver sobrecarga
       if(!overloadCount) {
-        const newTask = schedulingAlgorithm(queue, quantumCount, time)
+        const newTask = schedulingAlgorithm(tasks, queue, time, quantumCount)
 
         if(
           executedTask && newTask && 
@@ -145,7 +153,7 @@ const index = ({ route }) => {
   return (
     <View style={styles.container}>
       <ScrollView 
-        horizontal 
+        horizontal
         showsHorizontalScrollIndicator={false}
       >
         {columnsNumber !== undefined && (
@@ -157,13 +165,20 @@ const index = ({ route }) => {
           />
         )}
       </ScrollView>
+      <View>
+        {(turnaround !== undefined) && (
+          <Text>
+            {`Tempo Médio: ${turnaround.toFixed(2)}`}
+          </Text>
+        )}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
   },
 });
 
