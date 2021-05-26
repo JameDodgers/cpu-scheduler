@@ -96,25 +96,42 @@ export const roundRobin = (tasks, queue, time, quantum, quantumCount, setQuantum
 // EDF (Earliest Deadline First) - retorna para o processador a tarefa com menor dealine na fila de prontos
 export const edf = (tasks, queue, time, quantum, quantumCount, setQuantumCount) => {
   if (queue.length > 0) {
-    var shortestTask = queue[0];
-    console.log(queue);
+    var task = queue[0];
 
     // Seleciona o processo com menor dealine
     for (let i = 0; i < queue.length; i++) {
-      if (queue[i].deadline < shortestTask.deadline) {
-        shortestTask = queue[i];
+      if (queue[i].deadline < task.deadline) {
+        task = queue[i];
       }
     }
+    
+    if(!tasks[task.id - 1].startExecutionTime) {
+      tasks[task.id - 1].startExecutionTime = time + 1
+    }
 
-    --shortestTask.executionTime;
+    --task.executionTime;
+
+    //console.log(quantumCount);
+    setQuantumCount(quantumCount => quantumCount -1);
+    --task.executionTime;
+    
+    if(quantumCount === 1  && task.executionTime > 0) {
+      //console.log('entrou');
+      queue.splice(queue.indexOf(task), 1);
+      queue.push(task);
+      setQuantumCount(quantum);
+    }
 
     // Tira da fila se acabou o tempo de excução
-    if (shortestTask.executionTime === 0) {
-      queue.splice(queue.indexOf(shortestTask), 1);
+    if (task.executionTime === 0) {
+      queue.splice(queue.indexOf(task), 1);
+      tasks[task.id - 1].endExecutionTime = time + 1;
+      setQuantumCount(quantum);
     }
-    //console.log(shortestTask);
+
+    //console.log(task);
     return {
-      ...shortestTask,
+      ...task,
       overload: false
     };;
   }
