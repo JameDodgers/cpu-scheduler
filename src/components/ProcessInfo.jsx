@@ -11,19 +11,19 @@ import {
 } from 'react-native-paper'
 
 export default ({id, setTasks}) => {
-  const [arrivalTime, setArrivalTime] = useState()
-  const [executionTime, setExecutionTime] = useState()
-  const [deadline, setDeadline] = useState()
-  const [priority, setPriority] = useState()
+  const [arrivalTime, setArrivalTime] = useState('')
+  const [executionTime, setExecutionTime] = useState('')
+  const [deadline, setDeadline] = useState('')
+  const [priority, setPriority] = useState('')
 
   const addTask = (arrivalTime, executionTime, deadline, priority) => {
     setTasks(tasks => {    
       tasks[id - 1] = {
       ...tasks[id - 1],
-      arrivalTime: arrivalTime ? Number(arrivalTime) : 0,
-      executionTime: executionTime ? Number(executionTime) : 1,
-      deadline: deadline ? Number(deadline) : undefined,
-      priority: priority ? Number(priority) : 0,
+      arrivalTime: !!arrivalTime.trim() ? Number(arrivalTime) : 0,
+      executionTime: !!executionTime.trim() ? Number(executionTime) : 1,
+      deadline: !!deadline.trim() ? Number(deadline) : undefined,
+      priority: !!priority.trim() ? Number(priority) : 0,
     }
       return tasks
     })

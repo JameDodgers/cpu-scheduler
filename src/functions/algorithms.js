@@ -113,7 +113,6 @@ export const edf = (tasks, queue, time, quantum, quantumCount, setQuantumCount) 
 
     //console.log(quantumCount);
     setQuantumCount(quantumCount => quantumCount -1);
-    --task.executionTime;
     
     if(quantumCount === 1  && task.executionTime > 0) {
       //console.log('entrou');
