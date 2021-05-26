@@ -85,14 +85,14 @@ const index = ({ route }) => {
 
       // Executa o algoritmo de escalonamento selecionado se não houver sobrecarga
       if(!overloadCount) {
-        const newTask = schedulingAlgorithm(tasks, queue, time, quantumCount)
+        const newTask = schedulingAlgorithm(tasks, queue, time, quantum, quantumCount, setQuantumCount)
 
-        if(
+        /* if(
           executedTask && newTask && 
           (executedTask.id !== newTask)
         ) {
           setQuantumCount(Number(quantum))
-        }
+        } */
 
         if(newTask && (
           (schedulingAlgorithmsInfo[selectedSchedulingAlgorithm - 1].preemptive) ||
@@ -102,7 +102,7 @@ const index = ({ route }) => {
         }
 
         setExecutedTask(newTask);
-        setQuantumCount(quantumCount => quantumCount - 1)
+        //setQuantumCount(quantumCount => quantumCount - 1)
       } else {
         setOverloadCount(overloadCount => overloadCount - 1)
         setExecutedTask(executedTask => ({

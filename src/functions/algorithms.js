@@ -55,42 +55,73 @@ export const sjf = (tasks, queue, time) => {
   return undefined;
 };
 
+
 // Round Robin - fifo com tempo de quantum
-export const roundRobin = (queue, quantumCount, time) => {
-  // Quebrado. Terminar 
+export const roundRobin = (tasks, queue, time, quantum, quantumCount, setQuantumCount) => {
   if (queue.length > 0) {
-    
-    
-    
+    const task = queue[0];
+
+    if(!tasks[task.id - 1].startExecutionTime) {
+      tasks[task.id - 1].startExecutionTime = time + 1
+    }
+
+    //console.log(quantumCount);
+    setQuantumCount(quantumCount => quantumCount -1);
+    --task.executionTime;
+    if(quantumCount === 1  && task.executionTime > 0) {
+      //console.log('entrou');
+      queue.splice(0, 1);
+      queue.push(task);
+      setQuantumCount(quantum);
+    }
+
+    if (task.executionTime === 0) {
+      queue.splice(0, 1);
+      tasks[task.id - 1].endExecutionTime = time + 1;
+      setQuantumCount(quantum);
+    }
     return {
       ...task,
       overload: false
-    };;
-
+    };
   }
 
   return undefined
 };
 
 // EDF (Earliest Deadline First) - retorna para o processador a tarefa com menor dealine na fila de prontos
-export const edf = (queue, time, quantumCount) => {
+export const edf = (tasks, queue, time, quantum, quantumCount, setQuantumCount) => {
   if (queue.length > 0) {
-    var shortestTask = queue[0];
+    var task = queue[0];
 
-    for (let i = 0; i < queue.length; i++) {
-      if (queue[i].deadline < shortestTask.deadline) {
-        shortestTask = queue[i];
+    for(let i=0; i < queue.length; i++) {
+      if(queue[i].deadline < task.deadline) {
       }
     }
 
-    --shortestTask.deadline;
-
-    if (shortestTask.deadline === 0) {
-      queue.splice(queue.indexOf(shortestTask), 1);
+    if(!tasks[task.id - 1].startExecutionTime) {
+      tasks[task.id - 1].startExecutionTime = time + 1
     }
-    //console.log(shortestTask);
+
+    //console.log(quantumCount);
+    setQuantumCount(quantumCount => quantumCount -1);
+    --task.executionTime;
+
+    if(quantumCount === 1  && task.executionTime > 0) {
+      //console.log('entrou');
+      queue.splice(0, 1);
+      queue.push(task);
+      setQuantumCount(quantum);
+    }
+
+    if (task.executionTime === 0) {
+      queue.splice(0, 1);
+      tasks[task.id - 1].endExecutionTime = time + 1;
+      setQuantumCount(quantum);
+    }
+    
     return {
-      ...shortestTask,
+      ...task,
       overload: false
     };;
   }
