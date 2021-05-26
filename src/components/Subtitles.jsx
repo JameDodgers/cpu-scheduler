@@ -36,6 +36,7 @@ export default ({}) => {
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
+    alignItems: 'center'
   },
   subtitles: {
     margin: 16,
