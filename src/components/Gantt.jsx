@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-import { StyleSheet, View } from "react-native";
+import { 
+  StyleSheet, 
+  View, 
+} from "react-native";
 
 import Cell from "./Cell";
 

@@ -13,6 +13,7 @@ import {
 
 // import RAM from '../components/RAM'
 import Gantt from "../components/Gantt";
+import Subtitles from "../components/Subtitles";
 
 import { 
   fifo, 
@@ -172,9 +173,10 @@ const index = ({ route }) => {
           />
         )}
       </ScrollView>
+      <Subtitles />
       <View>
         {(turnaround !== undefined) && (
-          <Text>
+          <Text style={styles.text}>
             {`Tempo Médio: ${turnaround.toFixed(2)}`}
           </Text>
         )}
@@ -186,6 +188,9 @@ const index = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
+  },
+  text: {
+    marginStart: 8,
   },
 });
 
