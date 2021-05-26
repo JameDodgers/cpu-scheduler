@@ -63,25 +63,35 @@ function multiplo(n, mult) {
 // Round Robin - fifo com tempo de quantum
 export const roundRobin = (tasks, queue, time, quantum, quantumCount, setQuantumCount) => {
   if (queue.length > 0) {
-    const task = queue[0];
+    let task = queue[0];
+
+    for(let i = 0; i < queue.length; i++) {
+      if((tasks[queue[i].id - 1].endExecutionTime < tasks[task.id - 1].endExecutionTime)) {
+        task = queue[i];
+      }
+    }
 
     if(!tasks[task.id - 1].startExecutionTime) {
       tasks[task.id - 1].startExecutionTime = time + 1
     }
 
-    setQuantumCount(quantumCount => quantumCount -1);
-    --task.executionTime;
-    if(quantumCount === 1  && task.executionTime > 0) {
-      queue.splice(0, 1);
-      queue.push(task);
-      setQuantumCount(quantum);
-    }
+    setQuantumCount(quantumCount => quantumCount - 1);
 
-    if (task.executionTime === 0) {
-      queue.splice(0, 1);
+    --task.executionTime;
+
+    if(quantumCount === 1  && task.executionTime > 0) {
+      queue.splice(queue.indexOf(task), 1);
+      queue.push(task);
       tasks[task.id - 1].endExecutionTime = time + 1;
       setQuantumCount(quantum);
     }
+    
+    if (task.executionTime === 0) {
+      queue.splice(queue.indexOf(task), 1);
+      tasks[task.id - 1].endExecutionTime = time + 1;
+      setQuantumCount(quantum);
+    }
+    
     return {
       ...task,
       overload: false
@@ -97,7 +107,7 @@ export const edf = (tasks, queue, time, quantum, quantumCount, setQuantumCount) 
     var task = queue[0];
 
     // Seleciona o processo com menor dealine
-    for (let i = 0; i < queue.length; i++) {
+    for(let i = 0; i < queue.length; i++) {
       if (queue[i].deadline < task.deadline) {
         task = queue[i];
       }
@@ -113,7 +123,6 @@ export const edf = (tasks, queue, time, quantum, quantumCount, setQuantumCount) 
     setQuantumCount(quantumCount => quantumCount -1);
     
     if(quantumCount === 1  && task.executionTime > 0) {
-      //console.log('entrou');
       queue.splice(queue.indexOf(task), 1);
       queue.push(task);
       setQuantumCount(quantum);

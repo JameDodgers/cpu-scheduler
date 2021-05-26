@@ -22,9 +22,10 @@ export default ({id, setTasks, selectedSchedulingAlgorithm}) => {
     schedulingAlgorithms[selectedSchedulingAlgorithm - 1];
 
   const addTask = (arrivalTime, executionTime, deadline, priority) => {
-    setTasks(tasks => {    
-      tasks[id - 1] = {
-      ...tasks[id - 1],
+    setTasks(tasks => {
+      const updatedTasks = tasks    
+      updatedTasks[id - 1] = {
+      ...updatedTasks[id - 1],
       arrivalTime: !!arrivalTime.trim() ? Number(arrivalTime) : 0,
       executionTime: !!executionTime.trim() ? Number(executionTime) : 1,
       deadline: !!deadline.trim() ? Number(deadline) : undefined,
@@ -72,7 +73,7 @@ export default ({id, setTasks, selectedSchedulingAlgorithm}) => {
           value={deadline}
           onChangeText={value => {
             setDeadline(value)
-            addTask(arrivalTime, deadline, value, priority)
+            addTask(arrivalTime, executionTime, value, priority)
           }}
         />
       }

@@ -52,6 +52,7 @@ const index = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <ScrollView
+        keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.contentContainer}
       >
