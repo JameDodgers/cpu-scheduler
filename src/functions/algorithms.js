@@ -69,11 +69,9 @@ export const roundRobin = (tasks, queue, time, quantum, quantumCount, setQuantum
       tasks[task.id - 1].startExecutionTime = time + 1
     }
 
-    //console.log(quantumCount);
     setQuantumCount(quantumCount => quantumCount -1);
     --task.executionTime;
     if(quantumCount === 1  && task.executionTime > 0) {
-      //console.log('entrou');
       queue.splice(0, 1);
       queue.push(task);
       setQuantumCount(quantum);

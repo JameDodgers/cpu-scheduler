@@ -136,8 +136,8 @@ const index = ({ route }) => {
         );
   
         const columnsNumber =
-          Math.floor(width / (dimensions.cellSize + dimensions.cellBorderSize)) - 5;
-  
+          Math.ceil(width / (dimensions.cellSize + dimensions.cellBorderSize)) - 5;
+        
         setColumnsNumber(columnsNumber);
       } catch (error) {
         console.log(error);
