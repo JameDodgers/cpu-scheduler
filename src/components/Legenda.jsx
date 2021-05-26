@@ -10,10 +10,10 @@ import dimensions from "../util/dimensions";
 export default ({ style, textStyle, text }) => {
   return (
     <View>
-      <View style={[styles.row]}>
-        <View style={[styles.quadrado, styles.executando]}></View>
-        <Text style={[styles.text]}>Executando</Text>
-      </View>
+
+      <View style={[styles.quadrado, styles.executando]}></View>
+      <Text style={[styles.text]}>Executando</Text>
+
       <View style={[styles.quadrado, styles.sobrecarga]}></View>
       <Text style={[styles.text]}>Sobrecarga</Text>
 
@@ -50,6 +50,6 @@ const styles = StyleSheet.create({
   row:{
     display: flex,
     flex-direction: row,
-    
+
   }
 });
