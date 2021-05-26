@@ -10,20 +10,25 @@ import {
   TextInput
 } from 'react-native-paper'
 
-export default ({id, setTasks}) => {
-  const [arrivalTime, setArrivalTime] = useState()
-  const [executionTime, setExecutionTime] = useState()
-  const [deadline, setDeadline] = useState()
-  const [priority, setPriority] = useState()
+import { schedulingAlgorithms } from "../libs/storage";
+
+export default ({id, setTasks, selectedSchedulingAlgorithm}) => {
+  const [arrivalTime, setArrivalTime] = useState('')
+  const [executionTime, setExecutionTime] = useState('')
+  const [deadline, setDeadline] = useState('')
+  const [priority, setPriority] = useState('')
+
+  const schedulingAlgorithm =
+    schedulingAlgorithms[selectedSchedulingAlgorithm - 1];
 
   const addTask = (arrivalTime, executionTime, deadline, priority) => {
     setTasks(tasks => {    
       tasks[id - 1] = {
       ...tasks[id - 1],
-      arrivalTime: arrivalTime ? Number(arrivalTime) : 0,
-      executionTime: executionTime ? Number(executionTime) : 1,
-      deadline: deadline ? Number(deadline) : undefined,
-      priority: priority ? Number(priority) : 0,
+      arrivalTime: !!arrivalTime.trim() ? Number(arrivalTime) : 0,
+      executionTime: !!executionTime.trim() ? Number(executionTime) : 1,
+      deadline: !!deadline.trim() ? Number(deadline) : undefined,
+      priority: !!priority.trim() ? Number(priority) : 0,
     }
       return tasks
     })
@@ -58,10 +63,10 @@ export default ({id, setTasks}) => {
           }}
         />
       </View>
-      <View style={styles.rowEnd}>
+      {schedulingAlgorithm.name === "EDF" &&
         <TextInput
           mode='outlined'
-          style={styles.rowItem}
+          style={styles.rowItemEnd}
           keyboardType='number-pad'
           label="Deadline"
           value={deadline}
@@ -70,6 +75,8 @@ export default ({id, setTasks}) => {
             addTask(arrivalTime, deadline, value, priority)
           }}
         />
+      }
+      {schedulingAlgorithm.name === "Priority" &&  
         <TextInput
           mode='outlined'
           style={styles.rowItemEnd}
@@ -81,7 +88,7 @@ export default ({id, setTasks}) => {
             addTask(arrivalTime, executionTime, deadline, value)
           }}
         />
-      </View>  
+      }
     </View>
   )
 }

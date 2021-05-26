@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { 
   StyleSheet, 
   ScrollView, 
-  KeyboardAvoidingView
+  View,
 } from "react-native";
 
 import { Button } from "react-native-paper";
@@ -20,7 +20,7 @@ const index = ({ navigation, route }) => {
   } = route.params;
 
   const [tasks, setTasks] = useState(
-    [...Array(Number(processesNumber))].map((_, index) => {
+    [...Array(processesNumber)].map((_, index) => {
       return {
         id: index + 1,
         arrivalTime: 0,
@@ -34,7 +34,6 @@ const index = ({ navigation, route }) => {
   );
 
   const handleSubmit = () => {
-    // console.log(tasks)
     navigation.navigate("PlayGround", {
       tasks: tasks,
       quantum: quantum,
@@ -46,33 +45,31 @@ const index = ({ navigation, route }) => {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      keyboardShouldPersistTaps="handled"
-      behavior={Platform.OS == "ios" ? "padding" : "height"}
-    >
+    <View style={styles.container}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.contentContainer}
         style={styles.content}
       >
-        {[...Array(Number(processesNumber))]
+        {[...Array(processesNumber)]
         .map((_, index) => (
           <ProcessInfo 
             id={index + 1} 
-            key={index} 
+            key={index}
+            selectedSchedulingAlgorithm={selectedSchedulingAlgorithm}
             setTasks={setTasks} 
           />
         ))}
-        <Button
-          mode="contained"
-          onPress={() => handleSubmit()}
-        >
-          Próximo
-        </Button>
       </ScrollView>
-    </KeyboardAvoidingView>
+      <Button
+        style={styles.button}
+        mode="contained"
+        onPress={() => handleSubmit()}
+      >
+        Próximo
+      </Button>
+    </View>
   );
 };
 
@@ -86,6 +83,9 @@ const styles = StyleSheet.create({
   contentContainer: {
     padding: 8,
   },
+  button: {
+    margin: 8,
+  }
 });
 
 export default index;
