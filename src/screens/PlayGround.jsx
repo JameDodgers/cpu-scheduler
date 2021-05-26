@@ -37,6 +37,7 @@ const index = ({ route }) => {
     selectedSchedulingAlgorithm,
   } = route.params;
 
+  console.log(tasks);
   const { height: width } = useDimensions().window;
 
   const [time, setTime] = useState(0);
