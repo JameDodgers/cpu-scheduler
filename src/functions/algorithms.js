@@ -109,12 +109,10 @@ export const edf = (tasks, queue, time, quantum, quantumCount, setQuantumCount) 
       tasks[task.id - 1].startExecutionTime = time + 1
     }
 
-    --task.executionTime;
-
     //console.log(quantumCount);
     setQuantumCount(quantumCount => quantumCount -1);
     --task.executionTime;
-    
+
     if(quantumCount === 1  && task.executionTime > 0) {
       //console.log('entrou');
       queue.splice(queue.indexOf(task), 1);
