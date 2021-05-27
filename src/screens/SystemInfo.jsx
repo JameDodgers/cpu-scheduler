@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import {
   StyleSheet,
@@ -15,26 +15,42 @@ import { TextInput, Button } from "react-native-paper";
 
 import { Picker } from "@react-native-picker/picker";
 
-import { 
-  schedulingAlgorithms, 
-  pagingAlgorithms
-} from '../libs/storage'
+import { schedulingAlgorithms, pagingAlgorithms } from "../libs/storage";
 
 const index = ({ navigation }) => {
   const { colors } = useTheme();
 
-  const [quantum, setQuantum] = useState('1');
-  const [overload, setOverload] = useState('0');
-  const [selectedSchedulingAlgorithm, setSelectedSchedulingAlgorithm] = useState(1);
+  const [quantum, setQuantum] = useState("");
+  const [overload, setOverload] = useState("");
+  const [selectedSchedulingAlgorithm, setSelectedSchedulingAlgorithm] =
+    useState(1);
   const [selectedPagingAlgorithm, setSelectedPagingAlgorithm] = useState(1);
-  const [processesNumber, setProcessesNumber] = useState('0');
+  const [processesNumber, setProcessesNumber] = useState("");
+  const quantumTextInputRef = useRef(null);
+  const overloadTextInputRef = useRef(null);
+  const [error, setError] = useState("");
+
+  const isPreemptive =
+    schedulingAlgorithms[selectedSchedulingAlgorithm - 1].preemptive;
+
+  const handleSubmit = () => {
+    if (!processesNumber.trim()) {
+      setError("Informe o número de processos");
+
+      return;
+    }
+
+    navigation.navigate("ProcessesInfo", {
+      processesNumber: Number(processesNumber),
+      quantum: !!quantum.trim() ? Number(quantum) : 1,
+      overload: !!overload.trim() ? Number(overload) : 1,
+      selectedPagingAlgorithm: selectedPagingAlgorithm,
+      selectedSchedulingAlgorithm: selectedSchedulingAlgorithm,
+    });
+  };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      keyboardShouldPersistTaps="handled"
-      behavior={Platform.OS == "ios" ? "padding" : "height"}
-    >
+    <View style={styles.container}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
@@ -64,7 +80,14 @@ const index = ({ navigation }) => {
             }}
             dropdownIconColor={colors.primary}
             mode="dropdown"
-            onValueChange={(itemValue, itemIndex) => {
+            onValueChange={(itemValue, itemIndex) => {              
+              if (itemValue && !schedulingAlgorithms[itemValue - 1].preemptive) {
+                quantumTextInputRef.current.blur();
+                setQuantum("");
+                overloadTextInputRef.current.blur();
+                setOverload("");
+              }
+
               setSelectedSchedulingAlgorithm(itemValue);
             }}
           >
@@ -76,7 +99,7 @@ const index = ({ navigation }) => {
             })}
           </Picker>
         </View>
-        <Text
+        {/* <Text
           style={{
             color: colors.backdrop,
             marginBottom: 8,
@@ -111,50 +134,44 @@ const index = ({ navigation }) => {
               );
             })}
           </Picker>
-        </View>
-        <View style={styles.row}>                
+        </View> */}
+        <View style={styles.row}>
           <TextInput
+            ref={quantumTextInputRef}
             style={styles.textInputRow}
             mode="outlined"
             label="Quantum do Sistema"
+            editable={isPreemptive}
             keyboardType="number-pad"
             value={quantum}
             onChangeText={setQuantum}
           />
           <TextInput
+            ref={overloadTextInputRef}
             mode="outlined"
             style={styles.textInput}
             label="Sobrecarga do Sistema"
             keyboardType="number-pad"
+            editable={isPreemptive}
             value={overload}
             onChangeText={setOverload}
           />
-        </View>        
+        </View>
         <TextInput
-          style={styles.item}
           mode="outlined"
           label="Número de processos"
           keyboardType="number-pad"
           value={processesNumber}
           onChangeText={setProcessesNumber}
         />
-        <Button
-          mode="contained"
-          onPress={() => {
-            navigation.navigate("ProcessesInfo", {
-              processesNumber: processesNumber,
-              quantum: quantum,
-              overload: overload,
-              selectedPagingAlgorithm: selectedPagingAlgorithm,
-              selectedSchedulingAlgorithm: selectedSchedulingAlgorithm,
-            })
-            }
-          }
-        >
+        <Text style={styles.error}>
+          {error}
+        </Text>
+        <Button mode="contained" onPress={handleSubmit}>
           Próximo
         </Button>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 
@@ -188,6 +205,10 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
   },
+  error: {
+    color: "red",
+    marginBottom: 16,
+  }
 });
 
 export default index;

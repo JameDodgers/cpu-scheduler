@@ -13,6 +13,7 @@ import {
 
 // import RAM from '../components/RAM'
 import Gantt from "../components/Gantt";
+import Subtitles from "../components/Subtitles";
 
 import { 
   fifo, 
@@ -36,8 +37,8 @@ const index = ({ route }) => {
     selectedPagingAlgorithm,
     selectedSchedulingAlgorithm,
   } = route.params;
+  console.log(tasks)
 
-  console.log(tasks);
   const { height: width } = useDimensions().window;
 
   const [time, setTime] = useState(0);
@@ -70,7 +71,7 @@ const index = ({ route }) => {
         // console.log(tasks)
 
         setTurnaround(tasks.reduce((acc, task) => acc +
-        (1 + (task.endExecutionTime - task.startExecutionTime)), 0) / tasks.length)
+        (task.endExecutionTime - task.arrivalTime), 0) / tasks.length)
 
         return;
       }
@@ -80,7 +81,12 @@ const index = ({ route }) => {
           !(queue.some((item) => item.id === task.id)) &&
           task.arrivalTime === time
         ) {
-          queue.push(Object.assign({}, task))
+          if(schedulingAlgorithmsInfo[selectedSchedulingAlgorithm - 1].name === "Round Robin") {
+            task.endExecutionTime = task.arrivalTime
+            queue.splice(0, 0, Object.assign({}, task))
+          }else {
+            queue.push(Object.assign({}, task))
+          }
         }
       });
 
@@ -95,9 +101,10 @@ const index = ({ route }) => {
           setQuantumCount(Number(quantum))
         } */
 
-        if(newTask && (
-          (schedulingAlgorithmsInfo[selectedSchedulingAlgorithm - 1].preemptive) ||
-          (newTask.executionTime === 0)
+        if(executedTask && newTask && (
+          (schedulingAlgorithmsInfo[selectedSchedulingAlgorithm - 1].preemptive) &&
+          (newTask.executionTime !== 0) && 
+          (quantumCount === 1)
         )){
           setOverloadCount(Number(overload))
         }
@@ -136,8 +143,8 @@ const index = ({ route }) => {
         );
   
         const columnsNumber =
-          Math.floor(width / (dimensions.cellSize + dimensions.cellBorderSize)) - 5;
-  
+          Math.ceil(width / (dimensions.cellSize + dimensions.cellBorderSize)) - 5;
+        
         setColumnsNumber(columnsNumber);
       } catch (error) {
         console.log(error);
@@ -166,9 +173,10 @@ const index = ({ route }) => {
           />
         )}
       </ScrollView>
+      <Subtitles />
       <View>
         {(turnaround !== undefined) && (
-          <Text>
+          <Text style={styles.text}>
             {`Tempo Médio: ${turnaround.toFixed(2)}`}
           </Text>
         )}
@@ -180,6 +188,9 @@ const index = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
+  },
+  text: {
+    marginStart: 8,
   },
 });
 

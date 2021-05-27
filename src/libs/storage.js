@@ -19,6 +19,11 @@ export const schedulingAlgorithms = [
     name: "EDF",
     preemptive: true,
   },
+  {
+    id: 5,
+    name: "Priority",
+    preemptive: true,
+  },
 ];
 
 export const pagingAlgorithms = [
