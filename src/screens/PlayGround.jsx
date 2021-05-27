@@ -19,7 +19,8 @@ import {
   fifo, 
   roundRobin, 
   sjf, 
-  edf 
+  edf,
+  prioridade
 } from "../functions/algorithms";
 
 import { 
@@ -50,7 +51,7 @@ const index = ({ route }) => {
   const [quantumCount, setQuantumCount] = useState(Number(quantum))
   const [turnaround, setTurnaround] = useState()
   
-  const schedulingAlgorithms = [fifo, sjf, roundRobin, edf];
+  const schedulingAlgorithms = [fifo, sjf, roundRobin, edf, prioridade];
 
   const schedulingAlgorithm =
     schedulingAlgorithms[selectedSchedulingAlgorithm - 1];
