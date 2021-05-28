@@ -1,47 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { 
   StyleSheet, 
   ScrollView, 
   View,
+  Text,
 } from "react-native";
 
-import { Button } from "react-native-paper";
+import { TextInput, Button } from "react-native-paper";
 
 import ProcessInfo from "../components/ProcessInfo";
 
-const index = ({ navigation, route }) => {
-  const { 
-    processesNumber,
-    overload,
-    quantum,
-    selectedPagingAlgorithm,
-    selectedSchedulingAlgorithm,
-  } = route.params;
+const index = ({ navigation }) => {
+  const [processesNumber, setProcessesNumber] = useState("");
+  const [error, setError] = useState("");
+  const [tasks, setTasks] = useState([]);
 
-  const [tasks, setTasks] = useState(
-    [...Array(processesNumber)].map((_, index) => {
-      return {
-        id: index + 1,
-        arrivalTime: 0,
-        executionTime: 1,
-        deadline: undefined,
-        priority: 0,
-        startExecutionTime: undefined,
-        endExecutionTime: undefined,
-      }
-    })
-  );
+  useEffect(() => {
+    setTasks(() => (
+      [...Array(Number(processesNumber))].map((_, index) => {
+        return {
+          id: index + 1,
+          arrivalTime: 0,
+          executionTime: 1,
+          deadline: undefined,
+          priority: 0,
+          startExecutionTime: undefined,
+          endExecutionTime: undefined,
+        }
+      })
+    ))
+  }, [processesNumber])
+
+  const validateProcessNumber = (value) => {
+    if (!value.trim()) {
+      setError("Informe o número de processos");
+
+      return false;
+    }
+
+    setError("");
+
+    return true;
+  }
 
   const handleSubmit = () => {
-    navigation.navigate("PlayGround", {
-      tasks: tasks,
-      quantum: quantum,
-      overload: overload,
-      processesNumber: processesNumber,
-      selectedPagingAlgorithm: selectedPagingAlgorithm,
-      selectedSchedulingAlgorithm: selectedSchedulingAlgorithm,
-    });
+    if(validateProcessNumber(processesNumber)) {
+      navigation.navigate("SystemInfo", {
+        tasks: tasks,
+      });
+    }
   }
 
   return (
@@ -52,12 +60,24 @@ const index = ({ navigation, route }) => {
         contentContainerStyle={styles.contentContainer}
         style={styles.content}
       >
-        {[...Array(processesNumber)]
+        <TextInput
+          mode="outlined"
+          label="Número de processos"
+          keyboardType="number-pad"
+          value={processesNumber}
+          onChangeText={(value) => {
+            setProcessesNumber(value)
+            validateProcessNumber(value)
+          }}
+        />
+        <Text style={styles.error}>
+          {error}
+        </Text>
+        {[...Array(Number(processesNumber))]
         .map((_, index) => (
           <ProcessInfo 
             id={index + 1} 
             key={index}
-            selectedSchedulingAlgorithm={selectedSchedulingAlgorithm}
             setTasks={setTasks} 
           />
         ))}
@@ -85,6 +105,10 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 8,
+  },
+  error: {
+    color: "red",
+    marginStart: 8,
   }
 });
 

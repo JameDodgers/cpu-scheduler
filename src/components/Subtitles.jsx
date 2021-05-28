@@ -26,6 +26,10 @@ export default ({}) => {
         <Text style={styles.text}>Estouro de Deadline</Text>
       </View>
       <View style={styles.row}>
+        <Cell style={styles.waiting} />
+        <Text style={styles.text}>Em espera</Text>
+      </View>
+      <View style={styles.row}>
         <View style={styles.deadline} />
         <Text style={styles.text}>Deadline</Text>
       </View>
@@ -45,7 +49,6 @@ const styles = StyleSheet.create({
   },
   text: {
     marginStart: 8,
-    fontSize: 16,
   },
   executing:{
     backgroundColor: "chartreuse",
@@ -67,4 +70,9 @@ const styles = StyleSheet.create({
     width: 2,
     backgroundColor: 'red',
   },
+  waiting: {
+    backgroundColor: 'yellow',
+    borderBottomWidth: 0,
+    borderRightWidth: 0,
+  }
 });

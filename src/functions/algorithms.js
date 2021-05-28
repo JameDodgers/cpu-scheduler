@@ -140,7 +140,7 @@ export const edf = (tasks, queue, time, quantum, quantumCount, setQuantumCount) 
 };
 
 // Escalonamento por Prioridade - retorna para o processador a tarefa com a maior prioridade na fila de prontos
-export const prioridade = (tasks, queue, time, quantum, quantumCount, setQuantumCount) => {
+export const priority = (tasks, queue, time, quantum, quantumCount, setQuantumCount) => {
   if (queue.length > 0) {
     var task = queue[0];
 

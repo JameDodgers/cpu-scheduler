@@ -20,7 +20,7 @@ import {
   roundRobin, 
   sjf, 
   edf,
-  prioridade
+  priority
 } from "../functions/algorithms";
 
 import { 
@@ -38,7 +38,6 @@ const index = ({ route }) => {
     selectedPagingAlgorithm,
     selectedSchedulingAlgorithm,
   } = route.params;
-  console.log(tasks)
 
   const { height: width } = useDimensions().window;
 
@@ -51,7 +50,7 @@ const index = ({ route }) => {
   const [quantumCount, setQuantumCount] = useState(Number(quantum))
   const [turnaround, setTurnaround] = useState()
   
-  const schedulingAlgorithms = [fifo, sjf, roundRobin, edf, prioridade];
+  const schedulingAlgorithms = [fifo, sjf, roundRobin, edf, priority];
 
   const schedulingAlgorithm =
     schedulingAlgorithms[selectedSchedulingAlgorithm - 1];
@@ -68,8 +67,6 @@ const index = ({ route }) => {
       // Interrompe a contagem de tempo se não há mais processos em execução e não vai chegar mais nenhum processo
       if(executedTask === undefined && time > longestArrivalTime) {
         clearInterval(executionInterval)
-
-        // console.log(tasks)
 
         setTurnaround(tasks.reduce((acc, task) => acc +
         (task.endExecutionTime - task.arrivalTime), 0) / tasks.length)
@@ -95,13 +92,6 @@ const index = ({ route }) => {
       if(!overloadCount) {
         const newTask = schedulingAlgorithm(tasks, queue, time, quantum, quantumCount, setQuantumCount)
 
-        /* if(
-          executedTask && newTask && 
-          (executedTask.id !== newTask)
-        ) {
-          setQuantumCount(Number(quantum))
-        } */
-
         if(executedTask && newTask && (
           (schedulingAlgorithmsInfo[selectedSchedulingAlgorithm - 1].preemptive) &&
           (newTask.executionTime !== 0) && 
@@ -111,7 +101,6 @@ const index = ({ route }) => {
         }
 
         setExecutedTask(newTask);
-        //setQuantumCount(quantumCount => quantumCount - 1)
       } else {
         setOverloadCount(overloadCount => overloadCount - 1)
         setExecutedTask(executedTask => ({
@@ -171,6 +160,7 @@ const index = ({ route }) => {
             time={time}
             executedTask={executedTask}
             columnsNumber={columnsNumber}
+            selectedSchedulingAlgorithm={selectedSchedulingAlgorithm}
           />
         )}
       </ScrollView>

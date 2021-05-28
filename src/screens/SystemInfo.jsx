@@ -1,11 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import {
   StyleSheet,
-  Platform,
   ScrollView,
   Text,
-  KeyboardAvoidingView,
   View,
 } from "react-native";
 
@@ -17,7 +15,11 @@ import { Picker } from "@react-native-picker/picker";
 
 import { schedulingAlgorithms, pagingAlgorithms } from "../libs/storage";
 
-const index = ({ navigation }) => {
+const index = ({ navigation, route }) => {
+  const {
+    tasks,
+  } = route.params
+
   const { colors } = useTheme();
 
   const [quantum, setQuantum] = useState("");
@@ -25,23 +27,21 @@ const index = ({ navigation }) => {
   const [selectedSchedulingAlgorithm, setSelectedSchedulingAlgorithm] =
     useState(1);
   const [selectedPagingAlgorithm, setSelectedPagingAlgorithm] = useState(1);
-  const [processesNumber, setProcessesNumber] = useState("");
   const quantumTextInputRef = useRef(null);
   const overloadTextInputRef = useRef(null);
-  const [error, setError] = useState("");
 
   const isPreemptive =
     schedulingAlgorithms[selectedSchedulingAlgorithm - 1].preemptive;
 
   const handleSubmit = () => {
-    if (!processesNumber.trim()) {
-      setError("Informe o número de processos");
-
-      return;
-    }
-
-    navigation.navigate("ProcessesInfo", {
-      processesNumber: Number(processesNumber),
+    navigation.navigate("PlayGround", {      
+      tasks: tasks.map((task, _) => {
+        return {
+          ...task,
+          startExecutionTime: undefined,
+          endExecutionTime: undefined,
+        }
+      }),
       quantum: !!quantum.trim() ? Number(quantum) : 1,
       overload: !!overload.trim() ? Number(overload) : 1,
       selectedPagingAlgorithm: selectedPagingAlgorithm,
@@ -80,7 +80,7 @@ const index = ({ navigation }) => {
             }}
             dropdownIconColor={colors.primary}
             mode="dropdown"
-            onValueChange={(itemValue, itemIndex) => {              
+            onValueChange={(itemValue, _) => {              
               if (itemValue && !schedulingAlgorithms[itemValue - 1].preemptive) {
                 quantumTextInputRef.current.blur();
                 setQuantum("");
@@ -156,17 +156,7 @@ const index = ({ navigation }) => {
             value={overload}
             onChangeText={setOverload}
           />
-        </View>
-        <TextInput
-          mode="outlined"
-          label="Número de processos"
-          keyboardType="number-pad"
-          value={processesNumber}
-          onChangeText={setProcessesNumber}
-        />
-        <Text style={styles.error}>
-          {error}
-        </Text>
+        </View>        
         <Button mode="contained" onPress={handleSubmit}>
           Próximo
         </Button>
@@ -194,7 +184,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    marginBottom: 8,
+    marginBottom: 16,
   },
   textInputRow: {
     flex: 1,
@@ -205,10 +195,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
   },
-  error: {
-    color: "red",
-    marginBottom: 16,
-  }
 });
 
 export default index;

@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
 
-import { 
-  StyleSheet, 
-  View, 
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import Cell from "./Cell";
 
-export default ({ tasks, executedTask, time, columnsNumber }) => {
+import { schedulingAlgorithms } from "../libs/storage";
+
+export default ({ tasks, executedTask, time, columnsNumber, selectedSchedulingAlgorithm }) => {
   const [maxTime, setMaxTime] = useState(columnsNumber);
   const [matrix, setMatrix] = useState(
     Array.from({ length: tasks.length }, () =>
       Array.from({ length: columnsNumber }, () => 0)
     )
   );
+
+  const schedulingAlgorithm =
+    schedulingAlgorithms[selectedSchedulingAlgorithm - 1];
 
   useEffect(() => {
     const draw = () => {
@@ -27,11 +29,22 @@ export default ({ tasks, executedTask, time, columnsNumber }) => {
         setMaxTime(time);
       }
 
+      const updatedMatrix = matrix.map((task, index) => {
+        if(time > tasks[index].arrivalTime && 
+          !(task.filter(x => (x === 1 || x === 3)).length === tasks[index].executionTime)) {
+          task[time - 1] = 4
+        }
+
+        return task;
+      });
+
+      setMatrix(updatedMatrix);
+
       if (executedTask !== undefined) {
         const updatedMatrix = matrix;
         updatedMatrix[executedTask.id - 1][time - 1] = executedTask.overload
           ? 2
-          : (executedTask.deadline < time)
+          : schedulingAlgorithm.name === "EDF" && executedTask.deadline < time
           ? 3
           : 1;
 
@@ -73,7 +86,9 @@ export default ({ tasks, executedTask, time, columnsNumber }) => {
               {task.map((cell, column) => (
                 <Cell
                   style={[
-                    column === deadline - 1 && { borderEndColor: "red" },
+                    cell === 4 && { backgroundColor: "yellow" },
+                    schedulingAlgorithm.name === "EDF" &&
+                      column === deadline - 1 && { borderEndColor: "red" },
                     cell === 1 && { backgroundColor: "chartreuse" },
                     cell === 2 && { backgroundColor: "red" },
                     cell === 3 && { backgroundColor: "darkgreen" },

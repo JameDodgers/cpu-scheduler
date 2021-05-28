@@ -14,19 +14,19 @@ const index = () => {
   return (
     <StackRoutes.Navigator
       headerMode="none"
-      initialRouteName={'SystemInfo'}
+      initialRouteName={'ProcessesInfo'}
       screenOptions={{
         cardStyle: {
           backgroundColor: colors.white
         }
       }}>
         <StackRoutes.Screen
-          name="SystemInfo"
-          component={SystemInfo} 
-        />
-        <StackRoutes.Screen
           name="ProcessesInfo"
           component={ProcessesInfo} 
+        />
+        <StackRoutes.Screen
+          name="SystemInfo"
+          component={SystemInfo} 
         />
         <StackRoutes.Screen
           name="PlayGround"

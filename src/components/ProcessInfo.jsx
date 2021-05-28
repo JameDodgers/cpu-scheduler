@@ -10,16 +10,11 @@ import {
   TextInput
 } from 'react-native-paper'
 
-import { schedulingAlgorithms } from "../libs/storage";
-
-export default ({id, setTasks, selectedSchedulingAlgorithm}) => {
+export default ({id, setTasks}) => {
   const [arrivalTime, setArrivalTime] = useState('')
   const [executionTime, setExecutionTime] = useState('')
   const [deadline, setDeadline] = useState('')
   const [priority, setPriority] = useState('')
-
-  const schedulingAlgorithm =
-    schedulingAlgorithms[selectedSchedulingAlgorithm - 1];
 
   const addTask = (arrivalTime, executionTime, deadline, priority) => {
     setTasks(tasks => {
@@ -64,10 +59,10 @@ export default ({id, setTasks, selectedSchedulingAlgorithm}) => {
           }}
         />
       </View>
-      {schedulingAlgorithm.name === "EDF" &&
+      <View style={styles.row}>
         <TextInput
           mode='outlined'
-          style={styles.rowItemEnd}
+          style={styles.rowItem}
           keyboardType='number-pad'
           label="Deadline"
           value={deadline}
@@ -76,8 +71,6 @@ export default ({id, setTasks, selectedSchedulingAlgorithm}) => {
             addTask(arrivalTime, executionTime, value, priority)
           }}
         />
-      }
-      {schedulingAlgorithm.name === "Priority" &&  
         <TextInput
           mode='outlined'
           style={styles.rowItemEnd}
@@ -88,8 +81,8 @@ export default ({id, setTasks, selectedSchedulingAlgorithm}) => {
             setPriority(value)
             addTask(arrivalTime, executionTime, deadline, value)
           }}
-        />
-      }
+        />      
+      </View>
     </View>
   )
 }
@@ -117,5 +110,5 @@ const styles = StyleSheet.create({
   },
   rowItemEnd: {
     flex: 1,
-  }
+  },
 })
