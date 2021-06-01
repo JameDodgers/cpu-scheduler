@@ -24,7 +24,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "br.ufba.mata58.cpuScheduler"
     },
     "web": {
       "favicon": "./assets/favicon.png"
