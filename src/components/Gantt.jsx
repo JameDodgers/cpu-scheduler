@@ -45,8 +45,8 @@ export default ({ tasks, executedTask, time, columnsNumber, selectedSchedulingAl
         updatedMatrix[executedTask.id - 1][time - 1] = executedTask.overload
           ? 2
           : schedulingAlgorithm.name === "EDF" && executedTask.deadline < time
-          ? 3
-          : 1;
+            ? 3
+            : 1;
 
         setMatrix(updatedMatrix);
       }

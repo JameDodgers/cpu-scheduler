@@ -28,6 +28,8 @@ import {
   pagingAlgorithms
 } from '../libs/storage'
 
+import colors from "../util/colors"
+
 import dimensions from "../util/dimensions";
 
 const index = ({ route }) => {
@@ -55,6 +57,9 @@ const index = ({ route }) => {
   const schedulingAlgorithm =
     schedulingAlgorithms[selectedSchedulingAlgorithm - 1];
 
+  const schedulingAlgorithmInfo = 
+    schedulingAlgorithmsInfo[selectedSchedulingAlgorithm - 1]
+
   let longestArrivalTime = 0
 
   for(let i = 0; i < tasks.length; i++){
@@ -79,7 +84,7 @@ const index = ({ route }) => {
           !(queue.some((item) => item.id === task.id)) &&
           task.arrivalTime === time
         ) {
-          if(schedulingAlgorithmsInfo[selectedSchedulingAlgorithm - 1].name === "Round Robin") {
+          if(schedulingAlgorithmInfo.name === "Round Robin") {
             task.endExecutionTime = task.arrivalTime
             queue.splice(0, 0, Object.assign({}, task))
           }else {
@@ -93,7 +98,7 @@ const index = ({ route }) => {
         const newTask = schedulingAlgorithm(tasks, queue, time, quantum, quantumCount, setQuantumCount)
 
         if(executedTask && newTask && (
-          (schedulingAlgorithmsInfo[selectedSchedulingAlgorithm - 1].preemptive) &&
+          (schedulingAlgorithmInfo.preemptive) &&
           (newTask.executionTime !== 0) && 
           (quantumCount === 1)
         )){
@@ -133,7 +138,7 @@ const index = ({ route }) => {
         );
   
         const columnsNumber =
-          Math.ceil(width / (dimensions.cellSize + dimensions.cellBorderSize)) - 5;
+          Math.ceil(width / (dimensions.cellSize + dimensions.cellBorderSize)) - 4;
         
         setColumnsNumber(columnsNumber);
       } catch (error) {
@@ -165,12 +170,16 @@ const index = ({ route }) => {
         )}
       </ScrollView>
       <Subtitles />
-      <View>
-        {(turnaround !== undefined) && (
-          <Text style={styles.text}>
-            {`Tempo Médio: ${turnaround.toFixed(2)}`}
-          </Text>
-        )}
+      <View style={styles.info}>
+        <Text>
+          {`Algoritmo selecionado: ${schedulingAlgorithmInfo.name}`}
+        </Text>
+        <Text>
+          {`Tempo Médio: ${(turnaround !== undefined) 
+            ? turnaround.toFixed(2) 
+            : 'calculando...'
+          }`}
+        </Text>
       </View>
     </View>
   );
@@ -178,10 +187,11 @@ const index = ({ route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+
   },
-  text: {
-    marginStart: 8,
+  info: {
+    marginTop: 8,
+    paddingStart: 8,
   },
 });
 

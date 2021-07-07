@@ -12,6 +12,7 @@ export const fifo = (tasks, queue, time) => {
       queue.splice(0, 1);
       tasks[task.id - 1].endExecutionTime = time + 1;
     }
+
     return {
       ...task,
       overload: false,
@@ -25,8 +26,6 @@ export const fifo = (tasks, queue, time) => {
 export const sjf = (tasks, queue, time) => {
   if (queue.length > 0) {
     var shortestTask = queue[0];
-
-    console.log(tasks[shortestTask.id - 1]);
 
     for (let i = 0; i < queue.length; i++) {
       if (queue[i].executionTime < shortestTask.executionTime) {
@@ -44,7 +43,7 @@ export const sjf = (tasks, queue, time) => {
       queue.splice(queue.indexOf(shortestTask), 1);
       tasks[shortestTask.id - 1].endExecutionTime = time + 1;
     }
-    //console.log(shortestTask);
+    
     return {
       ...shortestTask,
       overload: false,
@@ -151,6 +150,7 @@ export const edf = (
       ...task,
       overload: false,
     };
+
   }
 
   return undefined;
