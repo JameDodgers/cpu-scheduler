@@ -12,21 +12,21 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - uses: expo/expo-github-action@v5
+      - uses: expo/expo-github-action@v6
         with:
-          expo-version: 4.x
-          expo-token: ${{ secrets.EXPO_TOKEN }}
+          eas-version: latest
           expo-cache: true
+          token: ${{ secrets.EXPO_TOKEN }}
       - run: yarn install
-      - run: expo build:android
+      - run: eas build
   publishing:
     needs: [building]
     runs-on: ubuntu-latest
     steps:
-      - uses: expo/expo-github-action@v5
+      - uses: expo/expo-github-action@v6
         with:
-          expo-version: 4.x
-          expo-token: ${{ secrets.EXPO_TOKEN }}
+          eas-version: latest
           expo-cache: true
+          token: ${{ secrets.EXPO_TOKEN }}
       - run: eas submit -p android --latest --key=${{ secrets.GOOGLE_SERVICES }}
     
