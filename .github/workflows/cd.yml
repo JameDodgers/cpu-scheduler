@@ -18,7 +18,7 @@ jobs:
           expo-cache: true
           token: ${{ secrets.EXPO_TOKEN }}
       - run: yarn install
-      - run: eas build
+      - run: eas build --platform android
   publishing:
     needs: [building]
     runs-on: ubuntu-latest
