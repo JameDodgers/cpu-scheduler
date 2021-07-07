@@ -28,5 +28,5 @@ jobs:
           expo-version: 4.x
           expo-token: ${{ secrets.EXPO_TOKEN }}
           expo-cache: true
-      - run: expo upload:android --latest --key ${{ secrets.GOOGLE_SERVICES }}
+      - run: eas submit -p android --latest --key=${{ secrets.GOOGLE_SERVICES }}
     
