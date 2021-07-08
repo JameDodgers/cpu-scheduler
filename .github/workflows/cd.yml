@@ -1,32 +1,33 @@
-name: Expo Publish on Play Store
+name: Expo Deploy on Play Store
 on:
   push:
     branches:
       - main
 jobs:
-  building:
-    name: Install and building for Android
+  publishing:
+    name: Build and upload on Play Store
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - uses: expo/expo-github-action@v6
+      - uses: expo/expo-github-action@v5
         with:
-          eas-version: latest
+          expo-version: latest
           expo-cache: true
-          token: ${{ secrets.EXPO_TOKEN }}
-      - run: yarn install
-      - run: eas build --platform android
-  publishing:
-    needs: [building]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: expo/expo-github-action@v6
-        with:
-          eas-version: latest
-          expo-cache: true
-          token: ${{ secrets.EXPO_TOKEN }}
-      - run: eas submit -p android --latest --key=${{ secrets.GOOGLE_SERVICES }}
-    
+          expo-token: ${{ secrets.EXPO_TOKEN }}
+      - run: |
+          yarn install
+      - run: |
+          expo build:android --type app-bundle > buildLogAndroid.txt
+          cat buildLogAndroid.txt
+      - run: |
+          BUILD_ARTIFACT_URL=$(cat buildLogAndroid.txt | tail | egrep -o 'https?://expo\.io/artifacts/[^ ]+')
+          echo "BUILD_ARTIFACT_URL=$BUILD_ARTIFACT_URL" >> $GITHUB_ENV
+      - run: |
+          echo "$GOOGLE_SERVICES" > key
+          expo upload:android --type aab --url ${{ env.BUILD_ARTIFACT_URL }} --key key
+        shell: bash
+        env:
+          GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
