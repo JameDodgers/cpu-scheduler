@@ -27,7 +27,7 @@ jobs:
           echo "BUILD_ARTIFACT_URL=$BUILD_ARTIFACT_URL" >> $GITHUB_ENV
       - run: |
           echo "$GOOGLE_SERVICES" > key
-          expo upload:android --type aab --url ${{ env.BUILD_ARTIFACT_URL }} --key key
+          expo upload:android --type aab --track production --url ${{ env.BUILD_ARTIFACT_URL }} --key key
         shell: bash
         env:
           GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
