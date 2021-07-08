@@ -2,7 +2,7 @@
   "expo": {
     "name": "cpu-scheduler",
     "slug": "cpu-scheduler",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -28,7 +28,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "br.ufba.mata58.cpuScheduler",
-      "versionCode": 1
+      "versionCode": 420010001
     },
     "web": {
       "favicon": "./assets/favicon.png"
