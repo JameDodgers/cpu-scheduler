@@ -6,7 +6,22 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|@react-native-picker/picker|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/coverage/**",
+      "!**/node_modules/**",
+      "!**/babel.config.js",
+      "!**/jest.setup.js"
+    ]
   },
   "dependencies": {
     "@react-native-community/hooks": "^2.6.0",
@@ -28,6 +43,8 @@
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
+    "jest-expo": "^42.0.1",
+    "react-test-renderer": "16.13.1",
     "standard-version": "^7.1.0",
     "standard-version-expo": "^1.0.3"
   },
