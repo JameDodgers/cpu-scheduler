@@ -2,7 +2,9 @@ import React from 'react'
 
 import {
   StatusBar,
-  StyleSheet, View
+  StyleSheet, 
+  View,
+  Platform
 } from 'react-native'
 
 import { getStatusBarHeight } from 'react-native-iphone-x-helper'
