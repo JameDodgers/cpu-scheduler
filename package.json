@@ -26,6 +26,10 @@
       "js",
       "jsx"
     ],
+    "moduleDirectories": [
+      "node_modules",
+      "<rootDir>/src/util"
+    ],
     "collectCoverage": true,
     "collectCoverageFrom": [
       "**/*.{js,jsx}",
@@ -55,6 +59,7 @@
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
+    "@testing-library/react-native": "^7.2.0",
     "jest-expo": "^42.0.1",
     "react-test-renderer": "16.13.1",
     "standard-version": "^7.1.0",
