@@ -154,7 +154,9 @@ const index = ({ route }) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View 
+      testID="playground-screen"
+      style={styles.container}>
       <ScrollView 
         horizontal
         showsHorizontalScrollIndicator={false}

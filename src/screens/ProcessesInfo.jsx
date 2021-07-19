@@ -53,7 +53,8 @@ const index = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View 
+      style={styles.container}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
@@ -61,6 +62,7 @@ const index = ({ navigation }) => {
         style={styles.content}
       >
         <TextInput
+          testID="input"
           mode="outlined"
           label="Número de processos"
           keyboardType="number-pad"
@@ -83,6 +85,7 @@ const index = ({ navigation }) => {
         ))}
       </ScrollView>
       <Button
+        testID="button1"
         style={styles.button}
         mode="contained"
         onPress={() => handleSubmit()}

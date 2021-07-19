@@ -50,7 +50,9 @@ const index = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View 
+      testID="system-info-screen"
+      style={styles.container}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
@@ -157,7 +159,10 @@ const index = ({ navigation, route }) => {
             onChangeText={setOverload}
           />
         </View>        
-        <Button mode="contained" onPress={handleSubmit}>
+        <Button 
+          testID="button2"
+          mode="contained" 
+          onPress={handleSubmit}>
           Próximo
         </Button>
       </ScrollView>
