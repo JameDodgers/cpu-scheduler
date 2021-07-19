@@ -20,6 +20,8 @@ jobs:
       - run: |
           yarn install
       - run: |
+          yarn test --verbose
+      - run: |
           expo build:android --type app-bundle > buildLogAndroid.txt
           cat buildLogAndroid.txt
       - run: |
