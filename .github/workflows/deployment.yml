@@ -1,8 +1,8 @@
 name: Expo Deploy on Play Store
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "v[0-9]*"
 jobs:
   publishing:
     name: Build and upload on Play Store
