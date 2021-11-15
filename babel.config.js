@@ -5,5 +5,6 @@ module.exports = function(api) {
       ['babel-preset-expo'],
       ['@babel/preset-env', {targets: {node: 'current'}}]
     ],
+    plugins: ['inline-dotenv'],
   };
 };
