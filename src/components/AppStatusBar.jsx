@@ -10,8 +10,13 @@ import {
 import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 
 const AppStatusBar = ({backgroundColor, ...props}) => {
+  const containerStyle = {
+    ...styles.statusBar,
+    backgroundColor
+  }
+
   return(
-    <View style={[styles.statusBar, backgroundColor]}>  
+    <View style={containerStyle}>  
       <StatusBar 
         translucent 
         backgroundColor={backgroundColor} 

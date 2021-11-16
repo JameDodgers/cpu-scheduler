@@ -7,9 +7,9 @@ import {
 } from "react-native";
 import dimensions from "../util/dimensions";
 
-export default ({ style, textStyle, text }) => {
+export default ({ cellStyle, textStyle, text }) => {
   return (
-    <View style={style ? [styles.cell, style] : styles.cell}>
+    <View style={cellStyle ? [styles.cell, cellStyle] : styles.cell}>
       {text !== undefined && (
         <Text style={textStyle ? textStyle : styles.text}>{text}</Text>
       )}

@@ -14,19 +14,19 @@ export default ({}) => {
   return (
     <View style={styles.subtitles}>
       <View style={styles.row}>
-        <Cell style={styles.executing} />
+        <Cell cellStyle={styles.executing} />
         <Text style={styles.text}>Executando</Text>
       </View>
       <View style={styles.row}>
-        <Cell style={styles.overload} />
+        <Cell cellStyle={styles.overload} />
         <Text style={styles.text}>Sobrecarga</Text>
       </View>        
       <View style={styles.row}>
-        <Cell style={styles.deadlineOverflow} />
+        <Cell cellStyle={styles.deadlineOverflow} />
         <Text style={styles.text}>Estouro de Deadline</Text>
       </View>
       <View style={styles.row}>
-        <Cell style={styles.waiting} />
+        <Cell cellStyle={styles.waiting} />
         <Text style={styles.text}>Em espera</Text>
       </View>
       <View style={styles.row}>

@@ -85,7 +85,7 @@ export default ({ tasks, executedTask, time, columnsNumber, selectedSchedulingAl
             <View key={`${row}`} style={styles.row}>
               {task.map((cell, column) => (
                 <Cell
-                  style={[
+                  cellStyle={[
                     cell === 4 && { backgroundColor: "yellow" },
                     schedulingAlgorithm.name === "EDF" &&
                       column === deadline - 1 && { borderEndColor: "red" },

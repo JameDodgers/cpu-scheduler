@@ -136,14 +136,12 @@ const index = ({ route }) => {
         await ScreenOrientation.lockAsync(
           ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
         );
-  
-        const columnsNumber =
-          Math.ceil(width / (dimensions.cellSize + dimensions.cellBorderSize)) - 4;
-        
-        setColumnsNumber(columnsNumber);
       } catch (error) {
         console.log(error);
       }
+      const columnsNumber =
+          Math.ceil(width / (dimensions.cellSize + dimensions.cellBorderSize)) - 4;
+      setColumnsNumber(columnsNumber);
     };
 
     changeScreenOrientation();
