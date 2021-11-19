@@ -62,6 +62,7 @@ const index = ({ navigation }) => {
         style={styles.content}
       >
         <TextInput
+          id="input"
           testID="input"
           mode="outlined"
           label="Número de processos"
@@ -78,7 +79,7 @@ const index = ({ navigation }) => {
         {[...Array(Number(processesNumber))]
         .map((_, index) => (
           <ProcessInfo 
-            id={index + 1} 
+            id={index + 1}
             key={index}
             setTasks={setTasks} 
           />

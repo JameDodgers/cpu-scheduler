@@ -62,6 +62,8 @@
   "devDependencies": {
     "@babel/core": "~7.9.0",
     "@testing-library/react-native": "^7.2.0",
+    "cypress": "^9.0.0",
+    "cypress-react-selector": "^2.3.13",
     "jest-expo": "^42.0.1",
     "prettier": "2.3.2",
     "react-test-renderer": "16.13.1",
