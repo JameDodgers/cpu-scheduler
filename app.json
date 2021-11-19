@@ -32,6 +32,21 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "sentry-expo"
+    ],
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "pablo-henrique",
+            "project": "cpu-scheduler",
+            "authToken": "571dcb8e1e0a46a482e2cc56c363136c9813eb130d5948be88fa5fd97cbff11f"
+          }
+        }
+      ]
     }
   }
 }

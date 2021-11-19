@@ -13,13 +13,30 @@ import AppStatusBar from './src/components/AppStatusBar';
 
 import Routes from './src/routes'
 
-export default function App() {
+import * as Sentry from 'sentry-expo';
+
+export const routingInstrumentation = new Sentry.Native.ReactNavigationInstrumentation();
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  debug: __DEV__,
+  environment: __DEV__ ? "development" : "production",
+  integrations: [
+    new Sentry.Native.ReactNativeTracing({
+      routingInstrumentation,
+    }),
+  ]
+});
+
+const App = () => {
   const { colors } = useTheme();
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <AppStatusBar style="light" backgroundColor={colors.primary} />
-      <Routes />
+      <Routes 
+        routingInstrumentation={routingInstrumentation}
+      />
     </SafeAreaView>
   );
 }
@@ -29,3 +46,5 @@ const styles = StyleSheet.create({
     flex: 1
   }
 })
+
+export default Sentry.Native.wrap(App);
